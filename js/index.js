@@ -294,14 +294,14 @@ $(document).ready(function() {
 
         {
             "name": "舅妈",
-            "爸爸": "未知",
-            "妈妈": "未知",
-            "哥哥": "未知",
-            "姐姐": "未知",
+            "爸爸": "姻伯公",
+            "妈妈": "姻伯婆",
+            "哥哥": "姻世伯",
+            "姐姐": "姻世母",
             "丈夫": "舅舅",
             "妻子": "未知",
-            "弟弟": "未知",
-            "妹妹": "未知",
+            "弟弟": "姻世伯",
+            "妹妹": "姻世母",
             "儿子": {
                 "长": "表哥",
                 "轻": "表弟",
@@ -322,8 +322,8 @@ $(document).ready(function() {
             "姐姐": "姨妈",
             "丈夫": "姨夫",
             "妻子": "未知",
-            "弟弟": "未知",
-            "妹妹": "未知",
+            "弟弟": "舅舅",
+            "妹妹": "姨妈",
             "儿子": {
                 "长": "表哥",
                 "轻": "表弟",
@@ -338,14 +338,14 @@ $(document).ready(function() {
 
         {
             "name": "姨夫",
-            "爸爸": "未知",
-            "妈妈": "未知",
-            "哥哥": "未知",
-            "姐姐": "未知",
+            "爸爸": "姻伯公",
+            "妈妈": "姻伯母",
+            "哥哥": "姻世伯",
+            "姐姐": "姻世母",
             "丈夫": "未知",
             "妻子": "姨妈",
-            "弟弟": "未知",
-            "妹妹": "未知",
+            "弟弟": "姻世伯",
+            "妹妹": "姻世母",
             "儿子": {
                 "长": "表哥",
                 "轻": "表弟",
@@ -365,7 +365,7 @@ $(document).ready(function() {
             "哥哥": "哥哥",
             "姐姐": "姐姐",
             "丈夫": "未知",
-            "妻子": "嫂嫂",
+            "妻子": "嫂子",
             "弟弟": {
                 "长": "哥哥",
                 "轻": "弟弟",
@@ -381,15 +381,15 @@ $(document).ready(function() {
         },
 
         {
-            "name": "嫂嫂",
-            "爸爸": "未知",
-            "妈妈": "未知",
-            "哥哥": "未知",
-            "姐姐": "未知",
+            "name": "嫂子",
+            "爸爸": "姻伯父",
+            "妈妈": "姻伯母",
+            "哥哥": "姻兄",
+            "姐姐": "姻姐",
             "丈夫": "哥哥",
             "妻子": "未知",
-            "弟弟": "未知",
-            "妹妹": "未知",
+            "弟弟": "姻弟",
+            "妹妹": "姻妹",
             "儿子": "侄子",
             "女儿": "侄女"
         },
@@ -548,12 +548,12 @@ $(document).ready(function() {
             "name": "女婿",
             "爸爸": "亲家公",
             "妈妈": "亲家母",
-            "哥哥": "未知",
-            "姐姐": "未知",
+            "哥哥": "姻侄",
+            "姐姐": "姻侄女",
             "丈夫": "未知",
             "妻子": "女儿",
-            "弟弟": "未知",
-            "妹妹": "未知",
+            "弟弟": "姻侄",
+            "妹妹": "姻侄女",
             "儿子": "外孙",
             "女儿": "外孙女"
         },
@@ -593,7 +593,7 @@ $(document).ready(function() {
             "哥哥": "大伯子",
             "姐姐": "大姑子",
             "丈夫": "未知",
-            "妻子": "嫂嫂",
+            "妻子": "嫂子",
             "弟弟": {
                 "长": "大伯子",
                 "轻": "小叔子",
@@ -1012,6 +1012,7 @@ $(document).ready(function() {
     ]
 
     sets = new Array();
+    arr= [];
     //查询谁的亲戚叫什么，如爸爸(whose)的爸爸(who)
     function Count(whose, who) {
         for (var p in set) {
@@ -1034,8 +1035,17 @@ $(document).ready(function() {
     }
     //点击按钮时，大显示屏会显示其属性
     $("button").click(function(event) {
+
+        if ($(this).attr("class")=="male") {
+          $(".husband").attr("disabled",true);
+          $(".wife").removeAttr("disabled");
+        }else if ($(this).attr("class")=="female") {
+          $(".wife").attr("disabled",true);
+          $(".husband").removeAttr("disabled");
+        };
         if ($(this).attr("val")) {
             $("#r").val($(this).attr("val"));
+            arr.push($(this).attr("val"));
         }
     })
     //点击“的”按钮时动作
@@ -1069,8 +1079,12 @@ $(document).ready(function() {
     //"="按钮时动作
     $("#count").click(function() {
         var o = $("#c").val();
+
         $("#c").val(" " + o + " " + $("#r").val() + " ＝");
-        sets.unshift($("#r").val());
+
+
+          sets.unshift($("#r").val());
+
 
         var result = Count(sets[1], sets[0]);
 
@@ -1099,9 +1113,42 @@ $(document).ready(function() {
     //重置键
     $("#clear").click(function() {
         sets = [];
+        arr=[];
         $("#r").val("我");
         $("#c").val(" ");
+        $(".husband").removeAttr("disabled");
+        $(".wife").removeAttr("disabled");
     })
+    //退格键
 
+    $("#back").click(function () {
+      arr.pop();
+      var str = $("#c").val();
+
+      var m = ["爸爸","哥哥","弟弟","儿子","丈夫"];
+      var f = ["妈妈","姐姐","妹妹","女儿","妻子"];
+
+      if (f.indexOf(arr[arr.length-1])) {
+         $(".husband").removeAttr("disabled");
+         $(".wife").attr("disabled",true);
+      }
+      if (m.indexOf(arr[arr.length-1])) {
+         $(".wife").removeAttr("disabled");
+         $(".husband").attr("disabled",true);
+      }
+
+      $("#r").val('');
+      if (str.length-5>0) {
+        $("#c").val(str.substring(0,str.length-5));
+      }
+       if($("#c").val()=="  "){
+        $("#c").val("");
+        $(".wife").removeAttr("disabled");
+        $(".husband").removeAttr("disabled");
+        sets=[];
+      }
+      // $("#r").val(result);
+      // sets.unshift(result);
+    })
 
 })

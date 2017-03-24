@@ -51,9 +51,16 @@ body {
 .container>.e {
     background-color: rgb(241, 196, 15);
 }
-
+.container>#back {
+  background-color: rgb(118, 200, 14);
+}
 .container>.b {
     background-color: rgb(182, 223, 215);
+}
+.container>.b[disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+
 }
 
 .container>.f {
@@ -63,7 +70,25 @@ body {
 .container>.g {
     background-color: rgb(186, 236, 207);
 }
-
+.container>.g[disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
 .container>.d {
     background-color: rgb(193, 57, 43);
+}
+
+.container>.wife:disabled  {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.container>.husband:disabled{
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.git {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px;
 }
